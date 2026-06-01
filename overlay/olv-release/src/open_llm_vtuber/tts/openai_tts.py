@@ -63,7 +63,7 @@ class TTSEngine(TTSInterface):
             )
         except Exception as e:
             logger.critical(f"Failed to initialize OpenAI client: {e}")
-            self.client = None  # Ensure client is None if init fails
+            raise
 
     def generate_audio(self, text, file_name_no_ext=None, speed=1.0):
         """
