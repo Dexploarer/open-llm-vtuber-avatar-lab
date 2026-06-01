@@ -1,0 +1,14 @@
+License Notice
+
+This repository is an overlay for Open-LLM-VTuber and includes modified files
+derived from upstream projects. Those files remain governed by their original
+upstream licenses and notices.
+
+Relevant upstream projects:
+
+- Open-LLM-VTuber: https://github.com/Open-LLM-VTuber/Open-LLM-VTuber
+- Open-LLM-VTuber-Web: https://github.com/Open-LLM-VTuber/Open-LLM-VTuber-Web
+- Live2D Cubism SDK sample code: Live2D Open Software license
+
+New standalone documentation and helper scripts in this overlay may be used
+under the MIT License unless an individual file states otherwise.

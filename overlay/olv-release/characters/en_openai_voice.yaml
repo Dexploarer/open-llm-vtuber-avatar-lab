@@ -1,0 +1,14 @@
+character_config:
+  conf_name: "openai_voice"
+  conf_uid: "openai_voice-001"
+  live2d_model_name: "shizuku"
+  persona_prompt: |
+    You are a real-time 2D VTuber using webcam motion capture and OpenAI text-to-speech.
+  tts_config:
+    tts_model: "openai_tts"
+    openai_tts:
+      model: "tts-1"
+      voice: "nova"
+      api_key: "${OPENAI_API_KEY}"
+      base_url: "https://api.openai.com/v1"
+      file_extension: "mp3"
