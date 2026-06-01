@@ -3,6 +3,7 @@ import base64
 import json
 import mimetypes
 import os
+import re
 import shutil
 import struct
 from pathlib import Path
@@ -17,9 +18,27 @@ def image_data_url(path: Path) -> str:
     return f"data:{mime_type};base64,{base64.b64encode(path.read_bytes()).decode('ascii')}"
 
 
-def require_openai_key() -> None:
-    if not os.environ.get("OPENAI_API_KEY"):
-        raise RuntimeError("Set OPENAI_API_KEY before using OpenAI avatar tooling.")
+def codex_config_paths() -> list[Path]:
+    return [Path.cwd() / ".codex" / "config.toml", Path.home() / ".codex" / "config.toml"]
+
+
+def openai_key_from_codex_config() -> str | None:
+    api_key_pattern = re.compile(r'^\s*api_key\s*=\s*["\']([^"\']+)["\']\s*$')
+    for path in codex_config_paths():
+        if not path.exists():
+            continue
+        for line in path.read_text(encoding="utf-8").splitlines():
+            match = api_key_pattern.match(line)
+            if match and match.group(1).strip():
+                return match.group(1).strip()
+    return None
+
+
+def require_openai_key() -> str:
+    api_key = os.environ.get("OPENAI_API_KEY") or openai_key_from_codex_config()
+    if not api_key:
+        raise RuntimeError("Set OPENAI_API_KEY or configure api_key in Codex config before using OpenAI avatar tooling.")
+    return api_key
 
 
 def default_parameter_bindings() -> list[dict[str, object]]:
@@ -63,10 +82,9 @@ def pack_inochi_draft(path: Path, payload: dict[str, object], texture_path: Path
 
 
 def rig_plan(args: argparse.Namespace) -> None:
-    require_openai_key()
     image_path = Path(args.image).expanduser().resolve()
     output_path = Path(args.output).expanduser().resolve()
-    client = OpenAI()
+    client = OpenAI(api_key=require_openai_key())
     response = client.chat.completions.create(
         model=args.model,
         response_format={"type": "json_object"},
@@ -184,9 +202,8 @@ def avatar_package(args: argparse.Namespace) -> None:
 
 
 def voice(args: argparse.Namespace) -> None:
-    require_openai_key()
     output_path = Path(args.output).expanduser().resolve()
-    client = OpenAI()
+    client = OpenAI(api_key=require_openai_key())
     response = client.audio.speech.create(
         model=args.model,
         voice=args.voice,

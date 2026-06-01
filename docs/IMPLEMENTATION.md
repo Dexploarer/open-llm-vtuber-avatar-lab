@@ -22,4 +22,6 @@ Live2D models vary. Standard face parameters are common, but arm and hand names 
 - `avatar-package`: creates a local package from a PNG without requiring OpenAI.
 - `voice`: creates an OpenAI TTS sample.
 
+The OpenAI commands read credentials from `OPENAI_API_KEY`, then from `.codex/config.toml`, then from `~/.codex/config.toml`. The key is passed directly to the OpenAI client and is not written into generated avatar packages.
+
 The Inochi2D output is an INP-layout draft container based on the public INP container structure. It is meant as an open-format handoff artifact, not a finished model.

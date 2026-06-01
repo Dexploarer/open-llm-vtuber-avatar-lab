@@ -53,6 +53,8 @@ OPENAI_API_KEY=... uv run python scripts/openai_avatar_assistant.py rig-plan \
   --output outputs/rig-plan.json
 ```
 
+The helper also accepts an `api_key` from `.codex/config.toml` or `~/.codex/config.toml` when `OPENAI_API_KEY` is not exported.
+
 The generated package contains source texture, rig plan, Live2D parameter map, Inochi2D parameter map, and an INP-layout draft container. It is not a finished rig; separated layers, meshes, deformers, and parameter keyforms still need authoring.
 
 ## OpenAI Voice
@@ -64,6 +66,8 @@ export OPENAI_API_KEY=...
 ```
 
 The preset switches `tts_model` to `openai_tts` and uses hosted OpenAI TTS through `https://api.openai.com/v1`.
+
+For one-off voice samples, `scripts/openai_avatar_assistant.py voice` can use either `OPENAI_API_KEY` or the Codex config `api_key`.
 
 ## Sources
 
